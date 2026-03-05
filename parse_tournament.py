@@ -4,7 +4,6 @@ import requests
 import pandas as pd
 import re
 import json
-import glob
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from openpyxl import Workbook
@@ -13,23 +12,21 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
-import distinctipy
 
-TOUR = 4
 TOURNAMENT_URL = "https://proberserk.ru/tournament/74441f78-9220-434c-8f64-3f7a7f341a05"
 
 DATA_FILEPATH = "data"
-CARDS_JSON_FILEPATH = f"{DATA_FILEPATH}/{TOUR}/cards.json"
-CARDS_FILEPATH = f"{DATA_FILEPATH}/{TOUR}/cards.xlsx"
-COSTS_FILEPATH = f"{DATA_FILEPATH}/{TOUR}/costs.xlsx"
-ELEMENTS_FILEPATH = f"{DATA_FILEPATH}/{TOUR}/elements.xlsx"
-CARD_MATRIX_FILEPATH = f"{DATA_FILEPATH}/{TOUR}/card_probability_matrix.xlsx"
-ARCHETYPES_FILEPATH = f"{DATA_FILEPATH}/{TOUR}/archetypes.xlsx"
-DECKS_FILEPATH = f"{DATA_FILEPATH}/{TOUR}/decks.xlsx"
+CARDS_JSON_FILEPATH = f"{DATA_FILEPATH}/cards.json"
+CARDS_FILEPATH = f"{DATA_FILEPATH}/cards.xlsx"
+COSTS_FILEPATH = f"{DATA_FILEPATH}/costs.xlsx"
+ELEMENTS_FILEPATH = f"{DATA_FILEPATH}/elements.xlsx"
+CARD_MATRIX_FILEPATH = f"{DATA_FILEPATH}/card_probability_matrix.xlsx"
+ARCHETYPES_FILEPATH = f"{DATA_FILEPATH}/archetypes.xlsx"
+DECKS_FILEPATH = f"{DATA_FILEPATH}/decks.xlsx"
 
 
 def parse():
+    """Функция парсит турнир и скачивает все деклисты в cards.json."""
 
     base_url = "https://proberserk.ru"
     response = requests.get(TOURNAMENT_URL)
@@ -68,6 +65,8 @@ def parse():
 
 
 def create_cards_excel():
+    """Функция обрабатывает cards.json и создает эксель со статистикой карт."""
+
     with open(CARDS_JSON_FILEPATH, "r", encoding="utf-8") as file:
         data = json.load(file)
 
@@ -108,7 +107,8 @@ def create_cards_excel():
     print(f"Создал эксель с картами с {len(lines)} строчками")
 
 
-def create_probability_matrix_and_archetypes_matrix():
+def create_probability_matrix_and_archetypes_excel():
+    """Функция обрабатывает cards.json и создает два экселя: 1) матрица карт с вероятностями быть в одной колоде с друг другом; 2) статистика стейплов"""
 
     with open(CARDS_JSON_FILEPATH, "r", encoding="utf-8") as file:
         data = json.load(file)
@@ -199,6 +199,7 @@ def create_probability_matrix_and_archetypes_matrix():
 
 
 def create_decks_excel():
+    """Функция обрабатывает cards.json и создает эксель со статистикой архетипов (нужно поменять archetypes.txt - через запятую указать карты в архетипе, последняя строчка это название архетипа)."""
 
     filename = CARDS_JSON_FILEPATH
     mapper = defaultdict(int)
@@ -265,6 +266,8 @@ def create_decks_excel():
 
 
 def create_costs_excel():
+    """Функция обрабатывает cards.json и создает эксель со статистикой стоимостей."""
+
     nxt_mapper = get_mapper_from_nxt_data()
 
     with open(CARDS_JSON_FILEPATH, "r", encoding="utf-8") as file:
@@ -367,6 +370,8 @@ def create_costs_excel():
 
 
 def create_elements_excel():
+    """Функция обрабатывает cards.json и создает эксель со статистикой стихий."""
+
     nxt_mapper = get_mapper_from_nxt_data()
 
     with open(CARDS_JSON_FILEPATH, "r", encoding="utf-8") as file:
@@ -482,6 +487,7 @@ def create_elements_excel():
 
 
 def create_common_excel():
+    """Функция обрабатывает cards.json и создает эксель со статистикой рядовых и элитных карт."""
 
     sheet_name = "Рядовые"
     output_name = "total_costs.xlsx"
@@ -537,6 +543,7 @@ def create_common_excel():
 
 
 def create_diagram():
+    """Функция составляет диаграмму по деклистам, использовалась в Кристалле."""
 
     elements_mapper = {
         "Степи": "#FFC400",
@@ -624,4 +631,11 @@ def create_diagram():
 
 
 if __name__ == "__main__":
+    parse()
     create_cards_excel()
+    create_probability_matrix_and_archetypes_excel()
+    create_decks_excel()
+    create_costs_excel()
+    create_elements_excel()
+    create_common_excel()
+    # create_diagram() нужно поменять под конкретные ваши нужды

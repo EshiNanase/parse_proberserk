@@ -20,11 +20,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from utils import login_to_proberserk, upload_deck_list, get_deck_name, create_deck, clean_deck_list, get_player_to_city_mapper, get_city_from_mapper, clean_player, get_deck_list
 
 
-EMAIL = "alksndr.zln@gmail.com"
-PASSWORD = "piksasov2112"
-TOURNAMENT_LINK = "https://proberserk.ru/tournament/74441f78-9220-434c-8f64-3f7a7f341a05"
+EMAIL = ""
+PASSWORD = ""
+TOURNAMENT_LINK = ""
 
-DECKLISTS_FILEPATH = "deck_lists/final/"
+DECKLISTS_FILEPATH = "deck_lists/"
 UPLOADED_DECKLISTS_FILEPATH = DECKLISTS_FILEPATH + "uploaded/"
 INVALID_DECKLISTS_FILEPATH = DECKLISTS_FILEPATH + "invalid/"
 
