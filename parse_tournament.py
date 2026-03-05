@@ -634,7 +634,7 @@ if __name__ == "__main__":
     parse()
     create_cards_excel()
     create_probability_matrix_and_archetypes_excel()
-    create_decks_excel()
+    # create_decks_excel() нужно поменять archetypes.txt и потом запускать
     create_costs_excel()
     create_elements_excel()
     create_common_excel()
