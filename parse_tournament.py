@@ -209,7 +209,7 @@ def create_decks_excel():
     total_lineaps = 0
     mapper_for_percentage = defaultdict(int)
 
-    with open("archetypes.txt", "r", encoding="utf-8") as file:
+    with open("data/archetypes.txt", "r", encoding="utf-8") as file:
         file_data = file.readlines()
         archetypes = {}
         for line in file_data:
